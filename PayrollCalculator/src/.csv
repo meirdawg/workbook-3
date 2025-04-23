@@ -1,0 +1,61 @@
+// Employee.java
+public class Employee {
+    int id;
+    String name;
+    double hours;
+    double rate;
+
+    public Employee(int i, String n, double h, double r) {
+        id = i;
+        name = n;
+        hours = h;
+        rate = r;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getGrossPay() {
+        return hours * rate;
+    }
+}
+
+// PayrollCalculator.java
+import java.io.*;
+
+public class PayrollCalculator {
+    public static void main(String[] args) throws IOException {
+
+        String inputFile = "employees.csv";
+        String outputFile = "payroll_report.csv";
+
+        BufferedReader br = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
+
+        bw.write("id|name|gross pay\n");
+
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split("\\|");
+
+            int id = Integer.parseInt(parts[0]);
+            String name = parts[1];
+            double hrs = Double.parseDouble(parts[2]);
+            double rate = Double.parseDouble(parts[3]);
+
+            Employee emp = new Employee(id, name, hrs, rate);
+
+            bw.write(emp.getId() + "|" + emp.getName() + "|" + String.format("%.2f", emp.getGrossPay()) + "\n");
+        }
+
+        br.close();
+        bw.close();
+    }
+}
+
